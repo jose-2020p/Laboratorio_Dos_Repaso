@@ -18,7 +18,7 @@ namespace Laboratorio_Dos_Repaso
         {
             InitializeComponent();
         }
-        void Agregar_Vehiculo()
+        void guardar_Vehiculo()
         {
             DATOS_VEHICULO agregarVehiculo = new DATOS_VEHICULO();
             agregarVehiculo.Numero_de_vehiculo = Convert.ToInt32(textBox1.Text);
@@ -30,7 +30,7 @@ namespace Laboratorio_Dos_Repaso
             vEHICULOs.Add(agregarVehiculo);
         }
 
-        void Vehiculo_Hoja()
+        void Escribir_Vehiculo_Hoja()
         {
             FileStream canal = new FileStream("Hoja_de_vehiculos.txt", FileMode.OpenOrCreate, FileAccess.Write);
             StreamWriter escribir_en_HojaV = new StreamWriter(canal);
@@ -51,7 +51,7 @@ namespace Laboratorio_Dos_Repaso
             StreamReader leer = new StreamReader(abrirArch);
             while (leer.Peek() > -1) {
                 DATOS_VEHICULO vehiculotemp = new DATOS_VEHICULO();
-                vehiculotemp.Numero_de_vehiculo = Int32.Parse(leer.ReadLine());
+                vehiculotemp.Numero_de_vehiculo = Convert.ToInt32(leer.ReadLine());
                 vehiculotemp.Placa = leer.ReadLine();
                 vehiculotemp.Marca = leer.ReadLine();
                 vehiculotemp.Modelo = leer.ReadLine();
@@ -63,32 +63,33 @@ namespace Laboratorio_Dos_Repaso
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            int veces = 0;
-            for (int i = 0; i < vEHICULOs.Count; i++)
+            if (textBox1.Text != "" && textBox2.Text != "" && textBox3.Text != "" &&
+                textBox4.Text != "" && textBox5.Text != "")
             {
-                if (textBox2.Text != vEHICULOs[i].Placa)
+                for (int i = 0; i < vEHICULOs.Count; i++)
                 {
-                    Agregar_Vehiculo();
-                    Vehiculo_Hoja();
-                }
-                if (textBox2.Text == vEHICULOs[i].Placa) {
-                    veces++;
-                }
-                if (veces != 0)
-                {
-                    MessageBox.Show("Datos repetido");
-                    veces = 0;
+
+                    if (textBox2.Text != vEHICULOs[i].Placa)
+                    {
+                        guardar_Vehiculo();
+                        Escribir_Vehiculo_Hoja();
+                        break;
+                    }
+                    if (textBox2.Text == vEHICULOs[i].Placa)
+                    {
+                        MessageBox.Show("Datos repetido");
+                    }
                 }
             }
-                    
-
+            else { 
+            MessageBox.Show("Complete los campos requeridos");
+            }
             textBox1.Text = "";
             textBox2.Text = "";
             textBox3.Text = "";
             textBox4.Text = "";
             textBox5.Text = "";
             textBox6.Text = "";
-
         }
 
         private void button2_Click(object sender, EventArgs e)
